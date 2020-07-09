@@ -10,6 +10,7 @@ public class BoardVO {
 	private String writer;
 	private Date regDate;
 	private Integer viewCnt;
+	swss
 	
 	public Integer getBoardNo() {
 		return boardNo;
