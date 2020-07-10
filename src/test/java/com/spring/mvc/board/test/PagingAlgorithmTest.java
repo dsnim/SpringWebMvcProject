@@ -61,9 +61,15 @@ public class PagingAlgorithmTest {
 	 - 언제 이전버튼을 비활서화 할 것인가? 시작페이지가 1인 부분에서 비활성.
 	 - 공식: 시작페이지 번호가 1로 구해진 시점에서 비활성 처리, 나머지는 활성.
 	 
-	 # 5-2. 다음버튼 활성 여부 설정
+	 # 5-2. 끝 페이지 값 보정
+	 - 다음 버튼이 비활성화 되었을 때 총 게시물 수에 맞춰 끝페이지번호를 재보정 한다.
+	 - 공식: Math.ceil(총 게시물의 수 / 한 페이지에 보여줄 게시물 수)
+	 
+	 # 5-3. 다음버튼 활성 여부 설정
 	 - 언제 다음버튼을 비활성화 할 것인가?
 	 - 공식: 보정전 끝페이지번호 * 한 페이지에 들어갈 게시물 수 >= 총 게시물수 ->비활성
+	 
+	 
 	 */
 	
 	@Autowired
@@ -79,7 +85,7 @@ public class PagingAlgorithmTest {
 		
 		//끝 페이지 번호 계산 테스트
 		PageVO paging = new PageVO();
-		paging.setPage(21);
+		paging.setPage(31);
 		int displayPage = 10;
 		
 		int endPage = (int)Math.ceil(paging.getPage() / (double)displayPage) * displayPage;
@@ -92,9 +98,18 @@ public class PagingAlgorithmTest {
 		boolean isPrev = (beginPage == 1) ? false : true;
 		System.out.println("이전 버튼 활성화 여부: " + isPrev);
 		
+		//끝 페이지 보정
+		int temp = (int)Math.ceil(mapper.countArticles() / (double)paging.getCountPerPage());
+		
+		//재보정 여부 판단하기
+		if(endPage > temp) {
+			endPage =temp;
+		}
+		
 		boolean isNext = (mapper.countArticles() <= (endPage * paging.getCountPerPage())) ? false : true;
 		System.out.println("다음 버튼 활성화 여부: " + isNext);
 		
+		System.out.println("보정 후 끝 페이지 번호: " + endPage + "번");
 		
 		System.out.println("===================");
 		
