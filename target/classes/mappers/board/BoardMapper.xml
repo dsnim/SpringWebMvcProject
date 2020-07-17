@@ -36,7 +36,7 @@
 	</select>
 	
 	<select id="countArticles" resultType="int">
-		SELECT COUNT(*)
+		SELECT COUNT(*) 
 		FROM mvc_board
 	</select>
 	

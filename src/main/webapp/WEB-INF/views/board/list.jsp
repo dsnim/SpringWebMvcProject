@@ -17,6 +17,12 @@ header.masthead {
 	background-color: #ff52a0;
 	color: white;
 }
+
+.page-active {
+	background-color: #ff52a0;
+}
+
+
 </style>
 
 <br><br> 
@@ -71,23 +77,27 @@ header.masthead {
 					<!-- 페이징 처리 부분  -->
 					<ul class="pagination justify-content-center">
                        	<!-- 이전 버튼 -->
-                       	<li class="page-item">
-							<a class="page-link" href="#" 
-							style="background-color: #ff52a0; margin-top: 0; height: 40px; color: white; border: 0px solid #f78f24; opacity: 0.8">이전</a>
-						</li>
+                       	<c:if test="${pc.prev}">
+	                       	<li class="page-item">
+								<a class="page-link" href="<c:url value='/board/list?page=${pc.beginPage-1}&countPerPage=${pc.paging.countPerPage}' />" 
+								style="background-color: #ff52a0; margin-top: 0; height: 40px; color: white; border: 0px solid #f78f24; opacity: 0.8">이전</a>
+							</li>
+						</c:if>
 						
 						<!-- 페이지 버튼 -->
-						<c:forEach var="pageNum" begin="1" end="10">
+						<c:forEach var="pageNum" begin="${pc.beginPage}" end="${pc.endPage}">
 							<li class="page-item">
-							   <a href="<c:url value='/board/list?page=${pageNum}'/>" class="page-link" style="margin-top: 0; height: 40px; color: pink; border: 1px solid pink;">${pageNum}</a>
+							   <a href="<c:url value='/board/list?page=${pageNum}&countPerPage=${pc.paging.countPerPage}'/>" class="page-link ${(pc.paging.page == pageNum) ? 'page-active' : ''}" style="margin-top: 0; height: 40px; color: pink; border: 1px solid pink;">${pageNum}</a>
 							</li>
 					    </c:forEach>
 					    
 					    <!-- 다음 버튼 -->
-					    <li class="page-item">
-					      <a class="page-link" href="#" 
-					      style="background-color: #ff52a0; margin-top: 0; height: 40px; color: white; border: 0px solid #f78f24; opacity: 0.8">다음</a>
-					    </li>
+					    <c:if test="${pc.next}">
+						    <li class="page-item">
+						      <a class="page-link" href="<c:url value='/board/list?page=${pc.endPage+1}&countPerPage=${pc.paging.countPerPage}' />" 
+						      style="background-color: #ff52a0; margin-top: 0; height: 40px; color: white; border: 0px solid #f78f24; opacity: 0.8">다음</a>
+						    </li>
+					    </c:if>
 				    </ul>
 					<!-- 페이징 처리 끝 -->
 					</div>
