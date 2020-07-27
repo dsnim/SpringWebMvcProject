@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.spring.mvc.board.model.BoardVO;
 import com.spring.mvc.board.repository.IBoardMapper;
 import com.spring.mvc.commons.PageVO;
+import com.spring.mvc.commons.SearchVO;
 
 @Service
 public class BoardService implements IBoardService {
@@ -30,6 +31,27 @@ public class BoardService implements IBoardService {
 	public List<BoardVO> getArticleListPaging(PageVO paging) {
 		//page = (page - 1) * 10;
 		return mapper.getArticleListPaging(paging);
+	}
+	
+	@Override
+	public List<BoardVO> getArticleListByTitle(SearchVO search) {
+		
+		return mapper.getArticleListByTitle(search);
+	}
+	
+	@Override
+	public Integer countArticlesByTitle(SearchVO search) {
+		return mapper.countArticlesByTitle(search);
+	}
+	
+	@Override
+	public List<BoardVO> getArticleListByWriter(SearchVO search) {
+		return mapper.getArticleListByWriter(search);
+	}
+	
+	@Override
+	public Integer countArticlesByWriter(SearchVO search) {
+		return mapper.countArticlesByWriter(search);
 	}
 	
 	@Override

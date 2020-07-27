@@ -35,6 +35,34 @@
 		LIMIT #{pageStart}, #{countPerPage}
 	</select>
 	
+	<select id="getArticleListByTitle" resultMap="BoardMap">
+		SELECT * 
+		FROM mvc_board 
+		WHERE title LIKE CONCAT('%', #{keyword},'%')
+		ORDER BY board_no DESC 
+		LIMIT #{pageStart}, #{countPerPage}
+	</select>
+	
+	<select id="countArticlesByTitle" resultType="int">
+		SELECT COUNT(*) 
+		FROM mvc_board 
+		WHERE title LIKE CONCAT('%', #{keyword},'%')
+	</select>
+	
+	<select id="getArticleListByWriter" resultMap="BoardMap">
+		SELECT * 
+		FROM mvc_board 
+		WHERE writer LIKE CONCAT('%', #{keyword},'%')
+		ORDER BY board_no DESC 
+		LIMIT #{pageStart}, #{countPerPage}
+	</select>
+	
+	<select id="countArticlesByWriter" resultType="int">
+		SELECT COUNT(*) 
+		FROM mvc_board 
+		WHERE writer LIKE CONCAT('%', #{keyword},'%')
+	</select>
+	
 	<select id="countArticles" resultType="int">
 		SELECT COUNT(*) 
 		FROM mvc_board

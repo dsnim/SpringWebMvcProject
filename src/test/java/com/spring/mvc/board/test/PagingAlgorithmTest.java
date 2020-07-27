@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.spring.mvc.board.repository.IBoardMapper;
 import com.spring.mvc.commons.PageVO;
+import com.spring.mvc.commons.SearchVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations= {"file:src/main/webapp/WEB-INF/spring/mvc-config.xml"})
@@ -110,6 +111,19 @@ public class PagingAlgorithmTest {
 		System.out.println("보정 후 끝 페이지 번호: " + endPage + "번");
 		
 		System.out.println("====================================");
+	}
+	
+	@Test
+	public void searchTest() {
+		
+		SearchVO search = new SearchVO();
+		search.setPage(3);
+		search.setKeyword("9");
+		
+		System.out.println("===========================");
+		mapper.getArticleListByTitle(search)
+		      .forEach(vo -> System.out.println(vo));
+		System.out.println("===========================");
 	}
 	
 }

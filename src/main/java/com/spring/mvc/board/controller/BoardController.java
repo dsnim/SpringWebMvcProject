@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import com.spring.mvc.board.model.BoardVO;
 import com.spring.mvc.board.service.IBoardService;
 import com.spring.mvc.commons.PageCreator;
 import com.spring.mvc.commons.PageVO;
+import com.spring.mvc.commons.SearchVO;
 
 @Controller
 @RequestMapping("/board")
@@ -38,6 +40,7 @@ public class BoardController {
 	}*/
 	
 	//페이징 처리 이후 게시글 목록 불러오기 요청
+	/*
 	@GetMapping("/list")
 	public String list(PageVO paging, Model model) {
 		List<BoardVO> list = service.getArticleListPaging(paging);
@@ -56,7 +59,40 @@ public class BoardController {
 
 		return "board/list";
 	}
+	*/
 	
+	//검색 처리 이후 게시물 목록 불러오기 요청
+	@GetMapping("/list")
+	public String list(SearchVO search, Model model) {
+
+		String condition = search.getCondition();
+		
+		System.out.println("URL: /board/list GET -> result: ");
+		System.out.println("parameter(페이지번호): " + search.getPage() + "번");
+		System.out.println("검색 조건: " + condition);
+		System.out.println("검색어: " + search.getKeyword());
+		
+		PageCreator pc = new PageCreator();
+		pc.setPaging(search);
+		
+		List<BoardVO> list = null;
+		
+		if(condition.equals("title")) {
+			list = service.getArticleListByTitle(search);
+			pc.setArticleTotalCount(service.countArticlesByTitle(search));
+		} else if(condition.equals("writer")) { 
+			list = service.getArticleListByWriter(search);
+			pc.setArticleTotalCount(service.countArticlesByWriter(search));
+		} else {
+			list = service.getArticleListPaging(search);
+			pc.setArticleTotalCount(service.countArticles());
+		}
+		
+		model.addAttribute("articles", list);
+		model.addAttribute("pc", pc);
+
+		return "board/list";
+	}
 
 	//게시글 작성페이지 요청
 	@GetMapping("/write")
@@ -77,7 +113,8 @@ public class BoardController {
 
 	//게시물 상세 조회 요청
 	@GetMapping("/content/{boardNo}")
-	public String content(@PathVariable Integer boardNo, Model model) {
+	public String content(@PathVariable Integer boardNo, Model model
+			, @ModelAttribute("p") PageVO paging) {
 		System.out.println("URL: /board/content => GET");
 		System.out.println("parameter(글 번호): " + boardNo);
 		BoardVO vo = service.getArticle(boardNo);
@@ -88,19 +125,23 @@ public class BoardController {
 
 	//게시물 삭제 처리 요청
 	@PostMapping("/delete")
-	public String remove(Integer boardNo, RedirectAttributes ra) {
+	public String remove(Integer boardNo, PageVO paging,
+					RedirectAttributes ra) {
 
 		System.out.println("URL: /board/delete => POST");
 		System.out.println("parameter(글 번호): " + boardNo);
 		service.delete(boardNo);
-		ra.addFlashAttribute("msg", "delSuccess");
+		ra.addFlashAttribute("msg", "delSuccess")
+		  .addAttribute("page", paging.getPage())
+		  .addAttribute("countPerPage", paging.getCountPerPage());
 
 		return "redirect:/board/list";
 	}
 	
 	//게시물 수정 페이지 요청
 	@GetMapping("/modify")
-	public String modify(Integer boardNo, Model model) {
+	public String modify(Integer boardNo, Model model
+			, @ModelAttribute("p") PageVO paging) {
 		System.out.println("URL: /board/modify => GET");
 		System.out.println("parameter(글 번호): " + boardNo);
 		

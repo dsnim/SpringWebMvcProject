@@ -1,19 +1,11 @@
 package com.spring.mvc.commons;
 
 public class PageCreator {
-<<<<<<< HEAD
 
 	//페이지번호와 한 페이지당 들어갈 게시물 수를 갖고 있는 객체
 	private PageVO paging;
 	private Integer articleTotalCount;//게시판의 총 게시물 수
 	private Integer beginPage; //시작 페이지 번호
-=======
-	
-	//페이지번호와 한 페이지당 들어갈 게시물 수를 갖고 있는 객체
-	private PageVO paging;
-	private Integer articleTotalCount; //게시판의 총 게시물 수
-	private Integer beginPage; //시작페이지 번호
->>>>>>> develop
 	private Integer endPage; //끝 페이지 번호
 	private boolean prev; //이전 버튼 활성화 여부
 	private boolean next; //다음 버튼 활성화 여부
@@ -25,7 +17,6 @@ public class PageCreator {
 	private void calcDataOfPage() {
 		
 		//보정 전 끝 페이지 구하기
-<<<<<<< HEAD
 		endPage = (int)Math.ceil(paging.getPage() 
 						/ (double)displayPageNum)
 				  		* displayPageNum;
@@ -46,20 +37,6 @@ public class PageCreator {
 		}
 		
 		
-=======
-		endPage = (int)Math.ceil(paging.getPage() / (double)displayPageNum) * displayPageNum;
-		//시작 페이지 번호 구하기
-		beginPage = (endPage - displayPageNum) + 1;
-		//현재 시작페이지가 1이라면 이전버튼 활성화 여부를 false로지정
-		prev = (beginPage == 1) ? false : true;
-		//마지막 페이지인지 여부 확인 후 다음 버튼 비활성.
-		next = (articleTotalCount <= (endPage * paging.getCountPerPage())) ? false : true;
-		//재보정 여부 판단하기
-		if(!isNext()) {
-		//끝 페이지 재보정하기
-			endPage = (int)Math.ceil( articleTotalCount / (double)paging.getCountPerPage());
-		}
->>>>>>> develop
 	}
 
 	public PageVO getPaging() {
@@ -111,7 +88,6 @@ public class PageCreator {
 		this.next = next;
 	}
 
-<<<<<<< HEAD
 	public Integer getDisplayPageNum() {
 		return displayPageNum;
 	}
@@ -122,16 +98,10 @@ public class PageCreator {
 				+ ", endPage=" + endPage + ", prev=" + prev + ", next=" + next + ", displayPageNum=" + displayPageNum
 				+ "]";
 	}
-=======
-	public Integer getDiplatPageNum() {
-		return displayPageNum;
-	}
->>>>>>> develop
 	
 	
 	
 }
-<<<<<<< HEAD
 
 
 
@@ -140,5 +110,3 @@ public class PageCreator {
 
 
 
-=======
->>>>>>> develop

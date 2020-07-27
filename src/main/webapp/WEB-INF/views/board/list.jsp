@@ -61,7 +61,7 @@ header.masthead {
 								<td>${b.boardNo}</td>
 								<td>${b.writer}</td>
 
-								<td><a style="margin-top: 0; height: 40px; color: orange;" href="<c:url value='/board/content/${b.boardNo}' />">
+								<td><a style="margin-top: 0; height: 40px; color: orange;" href="<c:url value='/board/content/${b.boardNo}?page=${pc.paging.page}&countPerPage=${pc.paging.countPerPage}' />">
 										${b.title}
 									</a>
 								</td>
@@ -152,6 +152,31 @@ header.masthead {
 			let count = $(this).val();
 			location.href="/board/list?countPerPage=" + count;
 		});
+		
+		//검색 버튼 이벤트 처리
+		$("#searchBtn").click(function() {
+			console.log("검색 버튼이 클릭됨!");
+			const keyword = $("#keywordInput").val();
+			console.log("검색어: " + keyword);
+			
+			const condition = $("#condition option:selected").val();
+			console.log("검색 조건: " + condition);
+			
+			location.href="/board/list?keyword="+keyword
+					+"&condition=" + condition;
+			
+		});
+		
+		
+		//엔터키 입력 이벤트
+		$("#keywordInput").keydown(function (key) {
+			 
+	        if(key.keyCode == 13){//키가 13이면 실행 (엔터는 13)
+	        	$("#searchBtn").click();
+	        }
+	 
+	    });
+		
 		
 	});//end jQuery
 
