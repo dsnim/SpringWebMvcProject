@@ -75,7 +75,10 @@ public class BoardController {
 		PageCreator pc = new PageCreator();
 		pc.setPaging(search);
 		
-		List<BoardVO> list = null;
+		List<BoardVO> list = service.getArticleList(search);
+		pc.setArticleTotalCount(service.countArticles(search));
+		
+		/*List<BoardVO> list = null;
 		
 		if(condition.equals("title")) {
 			list = service.getArticleListByTitle(search);
@@ -86,7 +89,7 @@ public class BoardController {
 		} else {
 			list = service.getArticleListPaging(search);
 			pc.setArticleTotalCount(service.countArticles());
-		}
+		}*/
 		
 		model.addAttribute("articles", list);
 		model.addAttribute("pc", pc);
@@ -114,7 +117,7 @@ public class BoardController {
 	//게시물 상세 조회 요청
 	@GetMapping("/content/{boardNo}")
 	public String content(@PathVariable Integer boardNo, Model model
-			, @ModelAttribute("p") PageVO paging) {
+			, @ModelAttribute("p") SearchVO paging) {
 		System.out.println("URL: /board/content => GET");
 		System.out.println("parameter(글 번호): " + boardNo);
 		BoardVO vo = service.getArticle(boardNo);

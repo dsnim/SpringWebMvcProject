@@ -1,5 +1,8 @@
 package com.spring.mvc.commons;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 public class PageCreator {
 
 	//페이지번호와 한 페이지당 들어갈 게시물 수를 갖고 있는 객체
@@ -12,6 +15,18 @@ public class PageCreator {
 	
 	//한 화면에 보여질 페이지 수
 	private final Integer displayPageNum = 10;
+	
+	//URI 파라미터를 쉽게 만들어주는 유틸메서드 선언.
+	public String makeURI(Integer page) {
+		UriComponents ucp = UriComponentsBuilder.newInstance()
+							.queryParam("page", page)
+							.queryParam("countPerPage", paging.getCountPerPage())
+							.queryParam("keyword", ((SearchVO)paging).getKeyword())
+							.queryParam("condition", ((SearchVO)paging).getCondition())
+							.build();
+		
+		return ucp.toUriString();
+	}
 	
 	//페이징 알고리즘을 수행할 메서드 선언.
 	private void calcDataOfPage() {
