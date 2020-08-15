@@ -15,6 +15,25 @@
 		<result property="viewCnt" column="view_cnt"/>
 		
 	</resultMap>
+	
+	<!-- 중복되는 동적 SQL문에 대한 처리 -->
+	<sql id="search">
+		<!-- 동적 SQL구문 -->
+		<if test="condition == 'title'">
+		WHERE title LIKE CONCAT('%', #{keyword},'%')
+		</if>
+		<if test="condition == 'writer'">
+		WHERE writer LIKE CONCAT('%', #{keyword},'%')
+		</if>
+		<if test="condition == 'content'">
+		WHERE content LIKE CONCAT('%', #{keyword},'%')
+		</if>
+		<if test="condition == 'titleContent'">
+		WHERE title LIKE CONCAT('%', #{keyword},'%')
+		 OR content LIKE CONCAT('%', #{keyword},'%')
+		</if>
+
+	</sql>
 
 	<insert id="insert">
 		INSERT INTO mvc_board 
@@ -24,10 +43,37 @@
 	
 	<select id="getArticleList" resultMap="BoardMap">
 		SELECT * 
-		FROM mvc_board 
-		ORDER BY board_no DESC 
+		FROM mvc_board
+		<include refid="search" />
+		ORDER BY board_no DESC
+		LIMIT #{pageStart}, #{countPerPage}
+	
 	</select>
 	
+	<select id="countArticles" resultType="int">
+		SELECT COUNT(*) 
+		FROM mvc_board
+		<include refid="search" />
+	</select>
+	
+	<select id="getArticle" resultMap="BoardMap">
+		SELECT * 
+		FROM mvc_board 
+		WHERE board_no=#{boardNo}
+	</select>
+	
+	<update id="update">
+        UPDATE mvc_board
+        SET title = #{title}, content = #{content}
+        WHERE board_no = #{boardNo}
+    </update>
+    
+    <delete id="delete">
+        DELETE FROM mvc_board 
+        WHERE board_no = #{boardNo}
+    </delete>
+	
+	<!-- 
 	<select id="getArticleListPaging" resultMap="BoardMap">
 		SELECT * 
 		FROM mvc_board 
@@ -63,27 +109,9 @@
 		WHERE writer LIKE CONCAT('%', #{keyword},'%')
 	</select>
 	
-	<select id="countArticles" resultType="int">
-		SELECT COUNT(*) 
-		FROM mvc_board
-	</select>
+	 -->
 	
-	<select id="getArticle" resultMap="BoardMap">
-		SELECT * 
-		FROM mvc_board 
-		WHERE board_no=#{boardNo}
-	</select>
-	
-	<update id="update">
-        UPDATE mvc_board
-        SET title = #{title}, content = #{content}
-        WHERE board_no = #{boardNo}
-    </update>
-    
-    <delete id="delete">
-        DELETE FROM mvc_board 
-        WHERE board_no = #{boardNo}
-    </delete>
+
 
 </mapper>
 

@@ -43,7 +43,7 @@ public class BoardMapperTest {
 //			System.out.println(vo);
 //		}	
 		
-		mapper.getArticleList().forEach(vo -> System.out.println(vo));
+		//mapper.getArticleList().forEach(vo -> System.out.println(vo));
 		
 	}
 	
@@ -90,8 +90,8 @@ public class BoardMapperTest {
 		paging.setPage(0);
 		paging.setCountPerPage(20);
 		
-		mapper.getArticleListPaging(paging)
-		      .forEach(vo -> System.out.println(vo));
+		//mapper.getArticleListPaging(paging)
+		//      .forEach(vo -> System.out.println(vo));
 		System.out.println("===================================");
 		
 	}

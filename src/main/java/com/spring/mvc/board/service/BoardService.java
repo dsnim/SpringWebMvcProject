@@ -23,43 +23,6 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
-	public List<BoardVO> getArticleList() {
-		return mapper.getArticleList();
-	}
-	
-	@Override
-	public List<BoardVO> getArticleListPaging(PageVO paging) {
-		//page = (page - 1) * 10;
-		return mapper.getArticleListPaging(paging);
-	}
-	
-	@Override
-	public List<BoardVO> getArticleListByTitle(SearchVO search) {
-		
-		return mapper.getArticleListByTitle(search);
-	}
-	
-	@Override
-	public Integer countArticlesByTitle(SearchVO search) {
-		return mapper.countArticlesByTitle(search);
-	}
-	
-	@Override
-	public List<BoardVO> getArticleListByWriter(SearchVO search) {
-		return mapper.getArticleListByWriter(search);
-	}
-	
-	@Override
-	public Integer countArticlesByWriter(SearchVO search) {
-		return mapper.countArticlesByWriter(search);
-	}
-	
-	@Override
-	public Integer countArticles() {
-		return mapper.countArticles();
-	}
-
-	@Override
 	public BoardVO getArticle(Integer boardNo) {
 		return mapper.getArticle(boardNo);
 	}
@@ -72,6 +35,17 @@ public class BoardService implements IBoardService {
 	@Override
 	public void delete(Integer boardNo) {
 		mapper.delete(boardNo);
+	}
+
+	@Override
+	public List<BoardVO> getArticleList(SearchVO search) {
+		List<BoardVO> list = mapper.getArticleList(search);
+		return list;
+	}
+
+	@Override
+	public Integer countArticles(SearchVO search) {
+		return mapper.countArticles(search);
 	}
 
 }

@@ -75,14 +75,14 @@ public class PagingAlgorithmTest {
 	 
 	 */
 	@Autowired
-	private IBoardMapper mapper;
+	//private IBoardMapper mapper;
 	
 	@Test
 	public void pagingAlgorithmTest() {
 		
 		//총 게시물 수 구하는 테스트
 		System.out.println("=========================");
-		System.out.println("# 총 게시물 수: " + mapper.countArticles()+ "개");
+		//System.out.println("# 총 게시물 수: " + mapper.countArticles()+ "개");
 		System.out.println("=========================");
 		
 		//끝 페이지 번호 계산 테스트
@@ -101,13 +101,13 @@ public class PagingAlgorithmTest {
 		boolean isPrev = (beginPage == 1) ? false : true;
 		System.out.println("이전 버튼 활성화 여부: " + isPrev);
 		
-		boolean isNext = (mapper.countArticles() <= (endPage * paging.getCountPerPage())) ? false : true;
-		System.out.println("다음 버튼 활성화 여부: " + isNext);
+		//boolean isNext = (mapper.countArticles() <= (endPage * paging.getCountPerPage())) ? false : true;
+		//System.out.println("다음 버튼 활성화 여부: " + isNext);
 		
 		//끝 페이지 보정
-		if(!isNext) {
-			endPage = (int)Math.ceil(mapper.countArticles() / (double)paging.getCountPerPage());
-		}
+		//if(!isNext) {
+		//	endPage = (int)Math.ceil(mapper.countArticles() / (double)paging.getCountPerPage());
+		//}
 		System.out.println("보정 후 끝 페이지 번호: " + endPage + "번");
 		
 		System.out.println("====================================");
@@ -121,8 +121,8 @@ public class PagingAlgorithmTest {
 		search.setKeyword("9");
 		
 		System.out.println("===========================");
-		mapper.getArticleListByTitle(search)
-		      .forEach(vo -> System.out.println(vo));
+		//mapper.getArticleListByTitle(search)
+		//      .forEach(vo -> System.out.println(vo));
 		System.out.println("===========================");
 	}
 	
