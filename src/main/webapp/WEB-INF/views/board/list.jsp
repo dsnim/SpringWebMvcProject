@@ -55,7 +55,7 @@ header.masthead {
 							</tr>
 						</thead>
 						
-						<c:if test="${articles.size() > 0}">
+						<c:if test="${articles.size() < 1 }">
 							<tr>
 								<td colspan="5" align="center">
 									<strong>검색 결과가 없습니다!!</strong>
@@ -73,6 +73,10 @@ header.masthead {
 								<td><a style="margin-top: 0; height: 40px; color: orange;" href="<c:url value='/board/content/${b.boardNo}${param.page == null ? pc.makeURI(1) : pc.makeURI(param.page)}' />">
 										${b.title}
 									</a>
+									&nbsp;
+									<c:if test="${b.newMark}">
+										<span class="badge badge-pill badge-danger">new</span>
+									</c:if>
 								</td>
 
 								<td>

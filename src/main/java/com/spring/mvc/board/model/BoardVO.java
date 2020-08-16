@@ -11,6 +11,17 @@ public class BoardVO {
 	private Date regDate;
 	private Integer viewCnt;
 	
+	//신규 게시물에 new마크를 붙일지 말지 결정하는 논리필드 선언.
+	private boolean newMark;
+	
+	public void setNewMark(boolean newMark) {
+		this.newMark = newMark;
+	}
+	
+	public boolean isNewMark() {
+		return newMark;
+	}
+	
 	public Integer getBoardNo() {
 		return boardNo;
 	}

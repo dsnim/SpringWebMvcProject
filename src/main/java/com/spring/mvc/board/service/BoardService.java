@@ -1,5 +1,6 @@
 package com.spring.mvc.board.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ public class BoardService implements IBoardService {
 
 	@Override
 	public BoardVO getArticle(Integer boardNo) {
+		mapper.updateViewCnt(boardNo);
 		return mapper.getArticle(boardNo);
 	}
 
@@ -40,6 +42,19 @@ public class BoardService implements IBoardService {
 	@Override
 	public List<BoardVO> getArticleList(SearchVO search) {
 		List<BoardVO> list = mapper.getArticleList(search);
+		
+		//1일 이내 신규글 new마크 처리 로직
+		for(BoardVO article : list) {
+			//현재 시간 읽어오기
+			long now = System.currentTimeMillis();//밀리초로 읽기 15억... * 1000초
+			//각 게시물들의 작성 시간 밀리초로 읽어오기
+			long regTime = article.getRegDate().getTime();
+			
+			if(now - regTime < 60 * 60 * 24 * 1000) {
+				article.setNewMark(true);
+			}
+		}
+		
 		return list;
 	}
 
