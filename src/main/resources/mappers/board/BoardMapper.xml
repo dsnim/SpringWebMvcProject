@@ -32,7 +32,6 @@
 		WHERE title LIKE CONCAT('%', #{keyword},'%')
 		 OR content LIKE CONCAT('%', #{keyword},'%')
 		</if>
-
 	</sql>
 
 	<insert id="insert">
@@ -47,7 +46,6 @@
 		<include refid="search" />
 		ORDER BY board_no DESC
 		LIMIT #{pageStart}, #{countPerPage}
-	
 	</select>
 	
 	<select id="countArticles" resultType="int">
@@ -61,6 +59,12 @@
 		FROM mvc_board 
 		WHERE board_no=#{boardNo}
 	</select>
+	
+	<update id="updateViewCnt">
+		UPDATE mvc_board
+		SET view_cnt = view_cnt + 1
+		WHERE board_no = #{boardNo}
+	</update>
 	
 	<update id="update">
         UPDATE mvc_board

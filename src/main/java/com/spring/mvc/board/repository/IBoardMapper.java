@@ -15,6 +15,9 @@ public interface IBoardMapper {
 	//게시글 상세 조회기능
 	BoardVO getArticle(Integer boardNo);
 	
+	//게시물 조회수 상승 처리
+	void updateViewCnt(Integer boardNo);
+	
 	//게시글 수정 기능
 	void update(BoardVO article);
 	
