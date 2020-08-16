@@ -28,6 +28,32 @@
 	
 	<context:component-scan base-package="com.spring.mvc" />
 	
+	<!-- 인터셉터 빈 등록 -->
+	<beans:bean id="testInterceptor" class="com.spring.mvc.commons.interceptor.TestInterceptor"/>
+	<beans:bean id="boardInterceptor" class="com.spring.mvc.commons.interceptor.BoardInterceptor"/>
 	
+	<interceptors>
+		<interceptor>
+			<mapping path="/test1"/>
+			<mapping path="/test2"/>
+			<beans:ref bean="testInterceptor" />
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/board/write"/>
+			<mapping path="/board/modify"/>
+			<mapping path="/board/delete"/>
+			<beans:ref bean="boardInterceptor" />
+		</interceptor>
+	</interceptors>
 	
 </beans:beans>
+
+
+
+
+
+
+
+
+
