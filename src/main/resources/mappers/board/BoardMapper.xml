@@ -42,9 +42,9 @@
 	
 	<select id="getArticleList" resultMap="BoardMap">
 		SELECT * 
-		FROM mvc_board
+		FROM mvc_board 		
 		<include refid="search" />
-		ORDER BY board_no DESC
+		ORDER BY board_no DESC 
 		LIMIT #{pageStart}, #{countPerPage}
 	</select>
 	
@@ -61,8 +61,8 @@
 	</select>
 	
 	<update id="updateViewCnt">
-		UPDATE mvc_board
-		SET view_cnt = view_cnt + 1
+		UPDATE mvc_board 
+		SET view_cnt = view_cnt + 1 
 		WHERE board_no = #{boardNo}
 	</update>
 	
@@ -113,9 +113,14 @@
 		WHERE writer LIKE CONCAT('%', #{keyword},'%')
 	</select>
 	
+	<select id="countArticles" resultType="int">
+		SELECT COUNT(*) 
+		FROM mvc_board
+	</select>
+	
 	 -->
 	
-
+	
 
 </mapper>
 

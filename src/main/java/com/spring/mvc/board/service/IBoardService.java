@@ -24,7 +24,7 @@ public interface IBoardService {
 	List<BoardVO> getArticleList(SearchVO search);
 	Integer countArticles(SearchVO search);
 	
-	//////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////
 
 	//게시글 목록 조회기능
 	//List<BoardVO> getArticleList();
@@ -47,6 +47,6 @@ public interface IBoardService {
 	//총 게시물의 수 조회기능
 	//Integer countArticles();
 
-	
+
 
 }

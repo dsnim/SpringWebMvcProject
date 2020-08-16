@@ -55,7 +55,7 @@ header.masthead {
 							</tr>
 						</thead>
 						
-						<c:if test="${articles.size() < 1 }">
+						<c:if test="${articles.size() <= 0}">
 							<tr>
 								<td colspan="5" align="center">
 									<strong>검색 결과가 없습니다!!</strong>
@@ -70,7 +70,8 @@ header.masthead {
 								<td>${b.boardNo}</td>
 								<td>${b.writer}</td>
 
-								<td><a style="margin-top: 0; height: 40px; color: orange;" href="<c:url value='/board/content/${b.boardNo}${param.page == null ? pc.makeURI(1) : pc.makeURI(param.page)}' />">
+								<td>
+									<a style="margin-top: 0; height: 40px; color: orange;" href="<c:url value='/board/content/${b.boardNo}${param.page == null ? pc.makeURI(1) : pc.makeURI(param.page)}' />">
 										${b.title}
 									</a>
 									&nbsp;
@@ -122,10 +123,10 @@ header.masthead {
 						<div class="col-sm-2"></div>
 	                    <div class="form-group col-sm-2">
 	                        <select id="condition" class="form-control" name="condition">                            	
-	                            <option value="title" ${param.condition == 'title' ? 'selected' : '' }>제목</option>
-	                            <option value="content" ${param.condition == 'content' ? 'selected' : '' }>내용</option>
-	                            <option value="writer" ${param.condition == 'writer' ? 'selected' : '' }>작성자</option>
-	                            <option value="titleContent" ${param.condition == 'titleContent' ? 'selected' : '' }>제목+내용</option>
+	                            <option value="title" ${param.condition == 'title' ? 'selected' : ''}>제목</option>
+	                            <option value="content" ${param.condition == 'content' ? 'selected' : ''}>내용</option>
+	                            <option value="writer" ${param.condition == 'writer' ? 'selected' : ''}>작성자</option>
+	                            <option value="titleContent" ${param.condition == 'titleContent' ? 'selected' : ''}>제목+내용</option>
 	                        </select>
 	                    </div>
 	                    <div class="form-group col-sm-4">
@@ -166,7 +167,7 @@ header.masthead {
 			let count = $(this).val();
 			const keyword = "${param.keyword}";
 			const condition = "${param.condition}";
-			location.href="/board/list?page=1&countPerPage=" + count
+			location.href="/board/list?page=1&countPerPage=" + count 
 							+ "&keyword=" + keyword
 							+ "&condition=" + condition;
 		});
