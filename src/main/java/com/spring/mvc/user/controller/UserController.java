@@ -2,7 +2,10 @@ package com.spring.mvc.user.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.mvc.user.model.UserVO;
 import com.spring.mvc.user.service.IUserService;
@@ -54,7 +58,14 @@ public class UserController {
 	
 	//로그인 요청 처리
 	@PostMapping("/loginCheck")
-	public String loginCheck(@RequestBody UserVO inputData) {
+	public String loginCheck(@RequestBody UserVO inputData, 
+							/*HttpServletRequest request*/
+							HttpSession session) {
+		
+		//서버에서 세션객체를 얻는 방법.
+		//1. HttpServletRequest객체 사용
+//		HttpSession session = request.getSession();
+		//2. HttpSession객체 사용.
 		
 		String result = null;
 		
@@ -68,10 +79,12 @@ public class UserController {
 		System.out.println("/user/loginCheck 요청! : POST");
 		System.out.println("Parameter: " + inputData);
 		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		UserVO dbData = service.selectOne(inputData.getAccount());
 		
 		if(dbData != null) {
-			if(inputData.getPassword().equals(dbData.getPassword())) {
+			if(encoder.matches(inputData.getPassword(), dbData.getPassword())) {
+				session.setAttribute("login", dbData);
 				result = "loginSuccess";
 			} else {
 				result = "pwFail";
@@ -81,6 +94,22 @@ public class UserController {
 		}
 		
 		return result;
+	}
+	
+	//로그아웃 요청 처리
+	@GetMapping("/logout")
+	public ModelAndView logout(HttpSession session) {
+		
+		System.out.println("/user/logout 요청!");
+		
+		UserVO user = (UserVO)session.getAttribute("login");
+		
+		if(user != null) {
+			session.removeAttribute("login");
+			session.invalidate();
+		}
+		
+		return new ModelAndView("redirect:/");
 	}
 	
 	

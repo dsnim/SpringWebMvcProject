@@ -430,7 +430,22 @@ $(function() {
 				data: JSON.stringify(userInfo),
 				dataType : "text",
 				success: function(data) {
-					console.log("result: " + data);											
+					console.log("result: " + data);	
+					if(data === "idFail") {
+						$('#signInId').css("background-color", "pink");
+						$('#idCheck').html('<b style="font-size:14px;color:red;">[회원가입 먼저~~]</b>');
+						$('#signInPw').val("");
+						$('#signInId').focus();
+						chk2 = false;
+				    } else if(data === "pwFail") {
+						$('#signInPw').css("background-color", "pink");
+						$('#signInPw').val("");
+						$('#signInPw').focus();
+						$('#pwCheck').html('<b style="font-size:14px;color:red;">[비밀번호가 틀렸어요!]</b>');
+						chk2 = false;
+					} else if(data === "loginSuccess") {
+						self.location="/";
+					}
 				}
 			});
 			

@@ -47,6 +47,13 @@
 		    <version>${org.springframework-version}</version>
 		</dependency>
 		
+		<!-- Spring Security 모듈 -->		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
 		<!-- MySQL 커넥터 -->
 		<dependency>
 		    <groupId>mysql</groupId>
