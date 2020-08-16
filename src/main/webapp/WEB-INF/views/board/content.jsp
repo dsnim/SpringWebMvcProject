@@ -73,7 +73,9 @@ $(function() {
 	$("#list-btn").click(function () {
 		console.log("목록 버튼이 클릭됨!");
 		location.href= '/board/list?page=${p.page}' 
-						+ '&countPerPage=${p.countPerPage}';
+						+ '&countPerPage=${p.countPerPage}'
+						+ '&keyword=${p.keyword}'
+						+ '&condition=${p.condition}';
 	});
 	
 	//수정버튼 클릭이벤트 처리

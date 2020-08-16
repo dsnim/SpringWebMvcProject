@@ -9,7 +9,7 @@ public class UriComponentTest {
 	@Test
 	public void testUriComp() {
 		
-		//Uri를 쉽게 작성할 수 있도록 도와주는 유틸클래스 UriComponentBuilder사용하기
+		//Uri를 쉽게 작성할 수 있도록 도와주는 유틸클래스 UriComponentsBuilder사용하기
 		UriComponents ucp = UriComponentsBuilder.newInstance()
 							.path("/board/list")
 							.queryParam("page", 3)
@@ -23,3 +23,8 @@ public class UriComponentTest {
 	}
 
 }
+
+
+
+
+

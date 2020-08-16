@@ -27,7 +27,7 @@ public class PageCreator {
 		
 		return ucp.toUriString();
 	}
-	
+		
 	//페이징 알고리즘을 수행할 메서드 선언.
 	private void calcDataOfPage() {
 		

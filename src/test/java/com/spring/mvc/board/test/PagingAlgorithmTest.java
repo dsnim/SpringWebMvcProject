@@ -75,7 +75,7 @@ public class PagingAlgorithmTest {
 	 
 	 */
 	@Autowired
-	//private IBoardMapper mapper;
+	private IBoardMapper mapper;
 	
 	@Test
 	public void pagingAlgorithmTest() {
