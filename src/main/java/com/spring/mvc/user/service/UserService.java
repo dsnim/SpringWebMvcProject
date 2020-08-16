@@ -20,6 +20,11 @@ public class UserService implements IUserService {
 	}
 	
 	@Override
+	public Integer checkId(String account) {
+		return mapper.checkId(account);
+	}
+	
+	@Override
 	public void delete(String account) {
 		mapper.delete(account);
 	}
