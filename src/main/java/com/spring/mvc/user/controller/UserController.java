@@ -1,8 +1,13 @@
 package com.spring.mvc.user.controller;
 
+import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,9 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Limit;
 import com.spring.mvc.user.model.UserVO;
 import com.spring.mvc.user.service.IUserService;
 
@@ -60,7 +68,8 @@ public class UserController {
 	@PostMapping("/loginCheck")
 	public String loginCheck(@RequestBody UserVO inputData, 
 							/*HttpServletRequest request*/
-							HttpSession session) {
+							HttpSession session,
+							HttpServletResponse response) {
 		
 		//서버에서 세션객체를 얻는 방법.
 		//1. HttpServletRequest객체 사용
@@ -86,6 +95,25 @@ public class UserController {
 			if(encoder.matches(inputData.getPassword(), dbData.getPassword())) {
 				session.setAttribute("login", dbData);
 				result = "loginSuccess";
+				
+				long limitTime = 60 * 60 * 24 * 90;
+				
+				//자동로그인 체크시 처리
+				if(inputData.isAutoLogin()) {
+					System.out.println("자동 로그인 쿠키 생성중...");
+					Cookie loginCookie = new Cookie("loginCookie", session.getId());
+					loginCookie.setPath("/");
+					loginCookie.setMaxAge((int)limitTime);
+					
+					response.addCookie(loginCookie);
+					
+					//자동로그인 유지시간을 날자객체로 변환
+					long expiredDate = System.currentTimeMillis() + (limitTime * 1000);
+					Date limitDate = new Date(expiredDate);
+					
+					service.keepLogin(session.getId(), limitDate, inputData.getAccount());
+				}
+				
 			} else {
 				result = "pwFail";
 			}
@@ -98,7 +126,9 @@ public class UserController {
 	
 	//로그아웃 요청 처리
 	@GetMapping("/logout")
-	public ModelAndView logout(HttpSession session) {
+	public ModelAndView logout(HttpSession session,
+							HttpServletRequest request,
+							HttpServletResponse response) {
 		
 		System.out.println("/user/logout 요청!");
 		
@@ -107,6 +137,22 @@ public class UserController {
 		if(user != null) {
 			session.removeAttribute("login");
 			session.invalidate();
+			
+			//로그아웃 시 자동로그인 쿠키 삭제 및 해당 회원 정보에서 session_id제거
+			/*
+			 1. loginCookie를 읽어온 뒤 해당 쿠키가 존재하는지 여부 확인
+			 2. 쿠키가 존재한다면 쿠키의 수명을 0초로 다시 설정한 후(setMaxAge사용)
+			 3. 응답객체를 통해 로컬에 0초짜리 쿠키 재전송 -> 쿠키 삭제
+			 4. service를 통해 keepLogin을 호출하여 DB컬럼 레코드 재설정
+			 	(session_id -> "none", limit_time -> 현재시간으로)
+			 */
+			Cookie loginCookie = WebUtils.getCookie(request, "LoginCookie");
+			if(loginCookie != null) {
+				loginCookie.setMaxAge(0);
+				response.addCookie(loginCookie);
+				service.keepLogin("none", new Date(), user.getAccount());
+			}
+			
 		}
 		
 		return new ModelAndView("redirect:/");
