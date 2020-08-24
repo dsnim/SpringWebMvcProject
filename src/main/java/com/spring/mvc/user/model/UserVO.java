@@ -9,7 +9,7 @@ public class UserVO {
 	private String name;
 	private Date regDate;
 	private String sessionId;
-	private String limitTime;
+	private Date limitTime;
 	
 	//자동로그인 체크 여부
 	private boolean autoLogin;
@@ -55,11 +55,11 @@ public class UserVO {
 		this.sessionId = sessionId;
 	}
 
-	public String getLimitTime() {
+	public Date getLimitTime() {
 		return limitTime;
 	}
 
-	public void setLimitTime(String limitTime) {
+	public void setLimitTime(Date limitTime) {
 		this.limitTime = limitTime;
 	}
 
@@ -72,3 +72,6 @@ public class UserVO {
 	
 
 }
+
+
+

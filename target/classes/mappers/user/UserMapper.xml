@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mvc.user.repository.IUserMapper">
+
+	<!-- 회원가입 SQL -->
+	<insert id="register">
+		INSERT INTO mvc_user 
+		 (account, password, name) 
+		VALUES (#{account}, #{password}, #{name})
+	</insert>
+	
+	<!-- 아이디 중복확인 SQL -->
+	<select id="checkId" resultType="int">
+		SELECT COUNT(*) 
+		FROM mvc_user 
+		WHERE account=#{account}
+	</select>
+	
+	<!-- 회원탈퇴 SQL -->
+	<delete id="delete">
+		DELETE FROM mvc_user 
+		WHERE account=#{account}
+	</delete>
+	
+	<!-- 회원정보 조회 SQL -->
+	<select id="selectOne" resultMap="UserMap">
+		SELECT * FROM mvc_user
+		WHERE account=#{account}	
+	</select>
+	
+	<!-- 회원정보 전체 조회 SQL -->
+	<select id="selectAll" resultMap="UserMap">
+		SELECT * FROM mvc_user
+	</select>
+	
+	<!-- 자동로그인을 체크할 경우 쿠키값(세션아이디)과 유지시간을 갱신 -->
+	<update id="keepLogin">
+		UPDATE mvc_user 
+		SET session_id=#{sessionId},
+			limit_time=#{limitDate} 
+		WHERE account=#{account}
+	</update>
+	
+	<!-- 
+		자동로그인을 했던 회원이 사이트 재방문 시
+		로컬에 저장된 쿠키값과 일치하는 회원의 정보를
+		조회하는 SQL
+	 -->
+	<select id="getUserWithSessionId" resultMap="UserMap">
+		SELECT * FROM mvc_user 
+		WHERE session_id=#{sessionId}
+	</select>
+	
+	<!-- DB컬럼명과 VO클래스의 필드가 다르므로 ResultMap 세팅 -->
+	<resultMap id="UserMap" type="com.spring.mvc.user.model.UserVO">		
+		<id property="account" column="account" />
+		<result property="password" column="password" />
+		<result property="name" column="name" />
+		<result property="regDate" column="reg_date" />	
+		<result property="sessionId" column="session_id" />	
+		<result property="limitTime" column="limit_time" />	
+	</resultMap>
+
+</mapper>
+
+
+
+
+

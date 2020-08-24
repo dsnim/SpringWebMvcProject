@@ -430,7 +430,7 @@ $(function() {
 			const userInfo = {
 					account : id,
 					password : pw,
-					autoLogin : autoLogin
+					autoLogin: autoLogin
 			};
 			
 			$.ajax({

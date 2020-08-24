@@ -7,7 +7,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,12 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud.Limit;
 import com.spring.mvc.user.model.UserVO;
 import com.spring.mvc.user.service.IUserService;
 
@@ -87,7 +84,7 @@ public class UserController {
 		 */
 		System.out.println("/user/loginCheck 요청! : POST");
 		System.out.println("Parameter: " + inputData);
-		
+				
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		UserVO dbData = service.selectOne(inputData.getAccount());
 		
@@ -107,7 +104,7 @@ public class UserController {
 					
 					response.addCookie(loginCookie);
 					
-					//자동로그인 유지시간을 날자객체로 변환
+					//자동로그인 유지시간을 날짜객체로 변환
 					long expiredDate = System.currentTimeMillis() + (limitTime * 1000);
 					Date limitDate = new Date(expiredDate);
 					
@@ -144,9 +141,9 @@ public class UserController {
 			 2. 쿠키가 존재한다면 쿠키의 수명을 0초로 다시 설정한 후(setMaxAge사용)
 			 3. 응답객체를 통해 로컬에 0초짜리 쿠키 재전송 -> 쿠키 삭제
 			 4. service를 통해 keepLogin을 호출하여 DB컬럼 레코드 재설정
-			 	(session_id -> "none", limit_time -> 현재시간으로)
+			   (session_id -> "none", limit_time -> 현재시간으로)
 			 */
-			Cookie loginCookie = WebUtils.getCookie(request, "LoginCookie");
+			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
 			if(loginCookie != null) {
 				loginCookie.setMaxAge(0);
 				response.addCookie(loginCookie);
